@@ -1,0 +1,214 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+
+	<ui:define name="title">
+		    Lista de Cargas
+	</ui:define>
+	<ui:define name="layout">
+
+		<h:form id="form">
+
+			<p:outputPanel>
+				<div class="card">
+					<p:accordionPanel widgetVar="basic">
+						<p:tab title="Opciones de visualización">
+							<div class="p-d-flex">
+							<div class="p-mr-2">
+								<p:outputLabel value="Mostrar:" />
+								<p:spacer width="30"></p:spacer>
+								<p:selectOneMenu id="option" value="#{cargasBean.selectmenu}">
+									<f:selectItem itemLabel="Select One" itemValue="-1" />
+									<f:selectItem itemLabel="Todas los cargas" itemValue="-1" />
+									<f:selectItem itemLabel="Cargas exportadas"
+										itemValue="exportadas" />
+
+									<p:ajax event="change" update=":form:dtcargas"
+										listener="#{servicesBean.onItemSelect()}">
+									</p:ajax>
+								</p:selectOneMenu>
+							</div>
+
+							<div class="p-mr-2">
+								<p:outputLabel for="range" value="Mostrar Cargas exportadas entre:" />
+								<p:datePicker id="range" selectionMode="range"
+									value="#{cargasBean.range}" readonlyInput="true">
+									<p:ajax event="dateSelect"
+										listener="#{cargasBean.onDateSelect}" update=":form:dtcargas" />
+								</p:datePicker>
+							</div>
+							
+							<div class="p-mr-2">
+								<p:outputLabel for="range2" value="Mostrar Cargas importadas entre:" />
+								<p:datePicker id="range2" selectionMode="range"
+									value="#{cargasBean.range}" readonlyInput="true">
+									<p:ajax event="dateSelect"
+										listener="#{cargasBean.onDateSelectt}" update=":form:dtcargas" />
+								</p:datePicker>
+							</div>
+							
+							</div>
+						</p:tab>
+					</p:accordionPanel>
+				</div>
+			</p:outputPanel>
+
+			<p:panelGrid columns="2" layout="flex"
+				styleClass="showcase-text-align-center" id="manage-user-content">
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>Cargas</h5>
+
+						<p:dataTable id="dtcargas" var="carga"
+							value="#{cargasBean.cargas}" selectionMode="single"
+							selection="#{cargasBean.selectedcarga}" rowKey="#{carga.idCarga}"
+							reflow="true" paginator="true" rows="10"
+							paginatorPosition="bottom" update="dtpaquetes" size="small"
+							style="width:120%">
+							<p:ajax event="rowSelect" listener="#{cargasBean.onRowSelect}"
+								update=":form:dtpaquetes" />
+							<!-- <p:ajax event="rowUnselect"
+								listener="#{dtSelectionView.onRowUnselect}" update=":form:msgs" /> -->
+							<p:column headerText="Codigo">
+								<h:outputText value="#{carga.idCarga}" />
+							</p:column>
+
+
+							<p:column headerText="Nombre">
+								<h:outputText value="#{carga.nombCarga}" />
+							</p:column>
+
+							<p:column headerText="Cantidad Paquetes">
+								<h:outputText value="#{carga.cantPaquetes}" />
+							</p:column>
+							<p:column exportable="false">
+								<p:commandButton icon="pi pi-search"
+									action="#{cargasBean.openForView}"
+									update=":form:manage-viewcarga-content"
+									oncomplete="PF('manageCargaViewDialog').show()"
+									styleClass="edit-button rounded-button ui-button-success"
+									process="@this">
+									<f:setPropertyActionListener value="#{carga}"
+										target="#{cargasBean.selectedcarga}" />
+								</p:commandButton>
+								<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+
+									<p:commandButton icon="pi pi-pencil"
+										action="#{cargasBean.openForEditCarga}"
+										update=":form:manage-carga-content"
+										oncomplete="PF('manageCargaDialog').show()"
+										styleClass="edit-button rounded-button ui-button-success"
+										process="@this">
+										<f:setPropertyActionListener value="#{carga}"
+											target="#{cargasBean.selectedcarga}" />
+										<p:resetInput target=":form:manage-carga-content" />
+									</p:commandButton>
+									<p:commandButton class="ui-button-warning rounded-button"
+										icon="pi pi-trash" process="@this"
+										action="#{cargasBean.deleteCarga}">
+										<f:setPropertyActionListener value="#{carga}"
+											target="#{cargasBean.selectedcarga}" />
+										<p:confirm header="#{msgs.btn_confirm}"
+											message="Está seguro de eliminar la carga?"
+											icon="pi pi-exclamation-triangle" />
+									</p:commandButton>
+
+								</sec:authorize>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</p:outputPanel>
+
+
+
+				<p:outputPanel>
+					<div class="card">
+
+						<p:toolbar>
+							<p:toolbarGroup>
+								<h5>Paquetes</h5>
+
+							</p:toolbarGroup>
+							<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+								<p:toolbarGroup align="right">
+
+									<p:commandButton value="#{msgs.nuevo}" icon="pi pi-plus"
+										action="#{cargasBean.openNew}"
+										update=":form:manage-newpaquete-content"
+										oncomplete="PF('manageNewPaqueteDialog').show()"
+										process="@this" styleClass="ui-button-success"
+										style="margin-right: .5rem">
+
+									</p:commandButton>
+								</p:toolbarGroup>
+							</sec:authorize>
+						</p:toolbar>
+						<p:dataTable id="dtpaquetes" var="paquete"
+							value="#{cargasBean.paquetes}"
+							selection="#{cargasBean.selectedpaq}"
+							rowKey="#{paquete.cod_paquete}" reflow="true" paginator="true"
+							rows="10" paginatorPosition="bottom" size="small">
+							<p:column headerText="Codigo">
+								<h:outputText value="#{paquete.cod_paquete}" />
+							</p:column>
+
+
+							<p:column headerText="Tipo Emp">
+								<h:outputText value="#{paquete.tipo_paquete}" />
+							</p:column>
+
+							<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+								<p:column exportable="false">
+									<p:commandButton icon="pi pi-pencil"
+										action="#{cargasBean.openForEditPaquete}"
+										update=":form:manage-paquete-content"
+										oncomplete="PF('managePaqueteDialog').show()"
+										styleClass="edit-button rounded-button ui-button-success"
+										process="@this">
+										<f:setPropertyActionListener value="#{paquete}"
+											target="#{cargasBean.selectedpaq}" />
+										<p:resetInput target=":form:manage-paquete-content" />
+									</p:commandButton>
+									<p:commandButton class="ui-button-warning rounded-button"
+										icon="pi pi-trash" process="@this"
+										action="#{cargasBean.deletePaquete}">
+										<f:setPropertyActionListener value="#{paquete}"
+											target="#{cargasBean.selectedpaq}" />
+										<p:confirm header="#{msgs.btn_confirm}"
+											message="Está seguro de eliminar el paquete?"
+											icon="pi pi-exclamation-triangle" />
+									</p:commandButton>
+								</p:column>
+							</sec:authorize>
+						</p:dataTable>
+						<p:confirmDialog global="true" showEffect="fade" width="300">
+							<p:commandButton value="Si" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no ui-button-secondary"
+								icon="pi pi-times" />
+						</p:confirmDialog>
+					</div>
+				</p:outputPanel>
+				<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+					<ui:include src="edit_paquete.xhtml"></ui:include>
+					<ui:include src="edit_carga.xhtml"></ui:include>
+					<ui:include src="new_paquete.xhtml"></ui:include>
+				</sec:authorize>
+				<ui:include src="view_carga.xhtml"></ui:include>
+			</p:panelGrid>
+
+
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+</html>

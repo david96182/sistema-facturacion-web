@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Cliente" showEffect="fade" modal="true"
+		widgetVar="manageClientViewDialog" responsive="true" width="30%">
+		<p:outputPanel id="manage-viewuser-content" class="ui-fluid">
+			<p:outputPanel >
+				<p:panelGrid layout="grid" columns="2">
+					<h:panelGroup>
+							
+						<div class="p-field">
+							<p:outputLabel>Nombre:</p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Email:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Tipo de cliente:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>País:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Teléfono:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Fax:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Dirección:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Cliente Preferencial:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Tarifa de transporte:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Tarifa de almacenamiento:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Tarifa de refrigeración:</p:outputLabel>
+							
+						</div>
+						
+					</h:panelGroup>
+					
+					<h:panelGroup> 
+						<div class="p-field">
+							<p:outputLabel><span>#{listaClienteBean.selectedUser.nombCliente}</span> </p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.email}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.tipo_cliente}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.paisCliente}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.telefCliente}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.faxCliente}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.direccionCliente}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.clientePriorizado}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.tarifaTransporte}</p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.tarifaAlmacenamiento}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{listaClienteBean.selectedUser.tarifaRefrigeracion}</p:outputLabel>
+							
+						</div>
+						
+						
+					</h:panelGroup>
+					
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('manageClientViewDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

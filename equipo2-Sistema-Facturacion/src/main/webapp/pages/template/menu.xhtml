@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="layout-sidebar">
+		<!-- <div class="layout-sidebar-filter ui-fluid ui-input-filled">
+            <h:form>
+                    <p:autoComplete placeholder="Search by name..." minQueryLength="3" effect="fade" 
+                                panelStyleClass="layout-sidebar-filter-panel" scrollHeight="300" emptyMessage="No results found!">
+                    
+                </p:autoComplete>
+            </h:form>
+        </div> -->
+
+		<div class="layout-menu">
+			<div class="menu-category">Administración</div>
+			<div class="menu-items">
+				<sec:authorize access="hasAnyAuthority('admin')">
+					<h:link outcome="/pages/security/users/user-list.xhtml">
+                        Gestionar usuarios
+                    </h:link>
+				</sec:authorize>
+
+				<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+					<h:link outcome="/pages/security/clientes/lista_clientes.xhtml">
+                        Gestionar clientes
+                    </h:link>
+				</sec:authorize>
+
+				<sec:authorize access="hasAnyAuthority('comercial')">
+					<a tabindex="0" class="submenu-link"> #{msgs.servicio} </a>
+					<div class="submenu">
+						<ul>
+							<li><h:link outcome="/pages/services/nueva_import.xhtml">
+                                    #{msgs.imp}
+                                </h:link></li>
+							<li><h:link outcome="/pages/services/nueva_export.xhtml">
+                                    #{msgs.exp}
+                                </h:link></li>
+						</ul>
+					</div>
+				</sec:authorize>
+
+			</div>
+			<sec:authorize access="hasAnyAuthority('comercial', 'manager')">
+				<div class="menu-category">Menú</div>
+				<div class="menu-items">
+					<p:outputPanel>
+						<a tabindex="0" class="submenu-link"> #{msgs.ver} </a>
+						<div class="submenu">
+							<ul>
+								<li><h:link outcome="/pages/almacen/almacenInfo.xhtml">
+                                    #{msgs.almcs}
+                                </h:link></li>
+								<li><h:link outcome="/pages/services/lista_servicios.xhtml">
+                                    #{msgs.servcs}
+                                </h:link></li>
+								<li><h:link outcome="/pages/companys/company-list.xhtml">
+                                    Compañías
+                                </h:link></li>
+								<li><h:link outcome="/pages/cargas/lista_cargas.xhtml">
+                                    Cargas y paquetes
+                                </h:link></li>
+                                
+							</ul>
+						</div>
+						<a tabindex="1" class="submenu-link"> Reportes </a>
+						<div class="submenu">
+							<ul>
+								<li><h:link outcome="/pages/reportes/reportgeneral.xhtml">
+                                    Ingresos Generados
+                                </h:link></li>
+								
+								<li><h:link outcome="/pages/reportes/reporteservicios.xhtml">
+                                    Servicios por año
+                                </h:link></li>
+                                
+							</ul>
+						</div>
+					</p:outputPanel>
+
+				</div>
+			</sec:authorize>
+			<sec:authorize access="hasAnyAuthority('guest')">
+				<div class="menu-category">Menú</div>
+				<div class="menu-items">
+					<p:outputPanel>
+						<a tabindex="0" class="submenu-link"> #{msgs.ver} </a>
+						<div class="submenu">
+							<ul>
+								<li><h:link outcome="/pages/almacen/almacenInfo.xhtml">
+                                    Almacenes
+                                </h:link></li>
+								<li><h:link outcome="/pages/services/lista_servicios.xhtml">
+                                    Servicios
+                                </h:link></li>
+								<li><h:link outcome="/pages/companys/company-list.xhtml">
+                                    Companys
+                                </h:link></li>
+								<li><h:link
+										outcome="/pages/security/clientes/lista_clientes.xhtml">
+                                    Clientes
+                                </h:link></li>
+								<li><h:link outcome="/pages/cargas/lista_cargas.xhtml">
+                                    Cargas y paquetes
+                                </h:link></li>
+							</ul>
+						</div>
+					</p:outputPanel>
+
+				</div>
+			</sec:authorize>
+			<div class="layout-footer"></div>
+			<div class="menu-items" style="position: fixed;bottom: 0;">
+				<h:form>
+				<p:commandButton value="Sobre la Empresa"
+					styleClass="ui-button-flat"
+					oncomplete="PF('manageEmpresaViewDialog').show()">
+				</p:commandButton>
+				</h:form>
+			</div>
+
+
+		</div>
+
+	</div>
+
+	<ui:include src="empresa.xhtml"></ui:include>
+</ui:composition>

@@ -1,0 +1,180 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+
+	<ui:define name="title">
+		    #{msgs.nuev_imp}
+	</ui:define>
+	<ui:define name="layout">
+
+		<h:form id="form">
+			<p:messages>
+				<p:autoUpdate />
+			</p:messages>
+
+			<p:panelGrid columns="2" layout="flex"
+				styleClass="showcase-text-align-center" id="manage-user-content">
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>#{msgs.sel_cli}</h5>
+						<p:dataTable id="dtcliente" var="cliente"
+							value="#{importBean.clientes}" selectionMode="single"
+							selection="#{importBean.selectedClient}"
+							rowKey="#{cliente.email}" reflow="true" paginator="true"
+							rows="5" paginatorPosition="bottom" size="small">
+							<p:column headerText="#{msgs.nombrecli}">
+								<h:outputText value="#{cliente.nombCliente}" />
+							</p:column>
+
+
+							<p:column headerText="#{msgs.correo}">
+								<h:outputText value="#{cliente.email}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</p:outputPanel>
+
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>#{msgs.sel_comp}</h5>
+						<p:dataTable id="compañia" var="company"
+							value="#{importBean.companys}" selectionMode="single"
+							selection="#{importBean.selectedCompany}"
+							rowKey="#{company.nameCompany}" reflow="true" paginator="true"
+							rows="5" paginatorPosition="bottom" size="small">
+							<p:column headerText="#{msgs.nombrecli}">
+								<h:outputText value="#{company.nameCompany}" />
+							</p:column>
+
+
+							<p:column headerText="#{msgs.tip}">
+								<h:outputText value="#{company.tipo}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</p:outputPanel>
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>#{msgs.carga_dat}</h5>
+						<p:panelGrid columns="4" layout="flex"
+							columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+							contentStyleClass="ui-fluid">
+							<p:outputLabel for="textB1" value="#{msgs.nombrecli}" />
+							<p:inputText id="textB1" required="true"
+								value="#{importBean.nombreCarga}">
+
+							</p:inputText>
+
+
+							<p:outputLabel for="textB2" value="#{msgs.tip_pro}" />
+							<p:inputText id="textB2" required="true"
+								value="#{importBean.tipoProducto}">
+								<p:keyFilter regEx="/[ABCDEFGHIJKLMNÑOPQRSTUVWXYZ]/i" />
+							</p:inputText>
+
+							<p:outputLabel for="checkboxB" value="#{msgs.cond_ref}" />
+							<p:selectBooleanCheckbox id="checkboxB"
+								value="#{importBean.cond_ref}">
+							</p:selectBooleanCheckbox>
+
+							<p:outputLabel for="@next" value="#{msgs.can_paq}" />
+							<p:spinner id="minMax" min="1" max="100"
+								value="#{importBean.cant_paq}" />
+
+
+							<p:outputLabel for="peso" value="#{msgs.peso_Uemp}" />
+							<p:inputText id="peso" value="#{importBean.peso_unidad_emp}">
+								<p:keyFilter regEx="/[1234567890.]/i" />
+								<f:validateDoubleRange minimum="0.1" />
+							</p:inputText>
+
+							<p:outputLabel for="selectOneB" value="#{msgs.tip_emp}" />
+							<p:selectOneMenu id="selectOneB"
+								value="#{importBean.tipo_empaquetado}" required="true">
+								<f:selectItem itemLabel="Select One" itemValue="" />
+								<f:selectItem itemLabel="prensado" itemValue="prensado" />
+								<f:selectItem itemLabel="primario" itemValue="primario" />
+								<f:selectItem itemLabel="secundario" itemValue="secundario" />
+								<f:selectItem itemLabel="terciario" itemValue="terciario" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="vencimiento" value="#{msgs.fech_ven}" />
+							<p:datePicker id="vencimiento" showIcon="true" style="width:auto"
+								value="#{importBean.fecha_vencimiento}" mindate="#{importBean.today}"/>
+
+
+
+
+						</p:panelGrid>
+					</div>
+				</p:outputPanel>
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>#{msgs.dat_imp}</h5>
+						<p:panelGrid columns="4" layout="flex"
+							columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+							contentStyleClass="ui-fluid">
+
+							<p:outputLabel for="combustible" value="#{msgs.comb_req}" />
+							<p:inputText id="combustible" required="true"
+								value="#{importBean.combustible_req}">
+								<p:keyFilter regEx="/[1234567890.]/i" />
+								<f:validateDoubleRange minimum="0.1" />
+								<p:ajax process=":form:peso @this" update=":form:importe" listener="#{importBean.calcImporte}"></p:ajax>
+							</p:inputText>
+
+							<p:outputLabel for="ingreso" value="#{msgs.fech_ing}" />
+							<p:datePicker id="ingreso" showTime="true" locale="de"
+								pattern="dd.MM.yyyy" required="true"
+								value="#{importBean.fecha_hora_ingreso}" mindate="#{importBean.today}"/>
+
+							<p:outputLabel for="salidaplan" value="#{msgs.fech_salP}" />
+							<p:datePicker id="salidaplan" showTime="true" locale="de"
+								pattern="dd.MM.yyyy" required="true"
+								value="#{importBean.fecha_hora_salida_plan}" mindate="#{importBean.today}"/>
+
+							<p:outputLabel for="importe" value="#{msgs.imp_tot}" />
+							<p:inputText id="importe" required="true"
+								value="#{importBean.importe_total}" disabled="true">
+								<p:keyFilter regEx="/[1234567890.]/i" />
+								<f:validateDoubleRange minimum="0.1" />
+							</p:inputText>
+
+							<p:commandButton value="#{msgs.reg}" styleClass="p-mr-2 p-mb-2"
+								style="width: auto;margin-left:9em"
+								actionListener="#{importBean.registrarImport}"
+								update=":form:manage-user-content"
+								process=":form:manage-user-content @this" />
+
+							<p:commandButton value="#{msgs.btn_limp}" styleClass="p-mb-2"
+								style="width: auto;margin-left:10em"
+								update=":form:manage-user-content" type="reset" />
+
+						</p:panelGrid>
+					</div>
+				</p:outputPanel>
+
+
+			</p:panelGrid>
+
+
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+</html>

@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Servicio" showEffect="fade" modal="true"
+		widgetVar="manageServicioDialog" responsive="true">
+		<p:outputPanel id="manage-servicio-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty servicesBean.selectedServicio}">
+				<p:panelGrid columns="1" layout="flex"
+					styleClass="showcase-text-align-center">
+					<h:panelGroup>
+						
+						<div class="p-field">
+							<p:outputLabel for="textB1" value="Codigo de carga" />
+							<p:inputText id="textB1" 
+								value="#{servicesBean.selectedServicio.idCarga}" disabled="true">
+
+							</p:inputText>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="textB2" value="Email Cliente" />
+							<p:inputText id="textB2" 
+								value="#{servicesBean.selectedServicio.email_cliente}" disabled="true">
+							</p:inputText>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="tiposerv" value="Tipo de servicio" />
+							<p:inputText id="tiposerv"
+								value="#{servicesBean.selectedServicio.tipo_movimiento}" disabled="true">
+							</p:inputText>
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="compa" value="Compañia" />
+							<p:inputText id="compa"
+								value="#{servicesBean.selectedServicio.nomb_comp}" disabled="true">
+							</p:inputText>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="comb" value="Combustible" />
+							<p:inputText id="comb" value="#{servicesBean.selectedServicio.combustible_requerido}">
+								<p:keyFilter regEx="/[1234567890.]/i" />
+								<f:validateDoubleRange minimum="0.1" />
+								</p:inputText>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="importe" value="Importe Total" />
+							<p:inputText id="importe" value="#{servicesBean.selectedServicio.importe_total}">
+								<p:keyFilter regEx="/[1234567890.]/i" />
+								<f:validateDoubleRange minimum="0.1" />
+							</p:inputText>
+						</div>
+
+						
+
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{servicesBean.saveServicio}"
+				update="manage-servicio-content" process="manage-servicio-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('manageServicioDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

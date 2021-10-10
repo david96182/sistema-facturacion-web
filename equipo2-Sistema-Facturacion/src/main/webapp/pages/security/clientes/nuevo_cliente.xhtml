@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:dialog header="#{msgs.nuev_cliente}" showEffect="fade" modal="true"
+		widgetVar="manageClientDialog" responsive="true">
+		<p:scrollPanel style="width:1000px;height:500px" mode="native">
+			<p:outputPanel id="manage-user-content" class="ui-fluid">
+				<p:outputPanel rendered="#{not empty listaClienteBean.selectedUser}">
+
+					<p:messages>
+						<p:autoUpdate />
+					</p:messages>
+					<p:panelGrid columns="6"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+						style="border:0px none; background-color:transparent">
+
+						<p:row styleClass="my-heading-row"
+							style="background-color: var(- -surface-c);
+	font-weight: bold;">
+            #{msgs.dat_per}
+        </p:row>
+
+						<p:outputLabel for="@next" value="#{msgs.nombrecli}" />
+						<p:inputText required="true"
+							value="#{listaClienteBean.selectedUser.nombCliente}" />
+
+
+
+						<p:outputLabel for="@next" value="#{msgs.pais}" />
+						<p:selectOneMenu id="lazy" required="true"
+							value="#{listaClienteBean.selectedUser.paisCliente}"
+							filter="true" filterMatchMode="startsWith" style="width:10em">
+
+							<f:selectItems value="#{selectOneMenuView.countries}"
+								var="country" itemLabel="#{country.name}" itemValue="#{country}" />
+						</p:selectOneMenu>
+
+
+						<p:outputLabel for="@next" value="#{msgs.telef}" />
+						<p:inputText required="true" maxlength="15"
+							value="#{listaClienteBean.selectedUser.telefCliente}">
+							<p:keyFilter mask="num" />
+						</p:inputText>
+
+
+						<p:outputLabel for="@next" value="#{msgs.correo}" />
+						<p:inputText required="true"
+							value="#{listaClienteBean.selectedUser.email}"
+							validatorMessage="Email mal formado">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+
+
+						<p:outputLabel for="@next" value="#{msgs.direcc}" />
+						<p:inputTextarea required="true" rows="3"
+							value="#{listaClienteBean.selectedUser.direccionCliente}" />
+
+
+						<p:outputLabel for="@next" value="Fax" />
+						<p:inputText required="true"
+							value="#{listaClienteBean.selectedUser.faxCliente}"
+							maxlength="15">
+							<p:keyFilter mask="num" />
+						</p:inputText>
+
+
+						<p:outputLabel for="@next" value="#{msgs.tipo_cliente}" />
+						<p:selectOneMenu required="true" id="option"
+							value="#{listaClienteBean.selectedUser.tipo_cliente}">
+							<f:selectItem itemLabel="Seleccione tipo" itemValue="" />
+							<f:selectItem itemLabel="Empresa" itemValue="entidad" />
+							<f:selectItem itemLabel="Cliente" itemValue="persona" />
+						</p:selectOneMenu>
+
+						<p:row id="my-row-id" styleClass="my-heading-row"
+							style="font-weight: bold">
+            #{msgs.dat_emp}
+        </p:row>
+
+						<p:outputLabel for="@next" value="#{msgs.tar_tran}" />
+						<p:inputText required="true"
+							value="#{listaClienteBean.selectedUser.tarifaTransporte}">
+							<p:keyFilter regEx="/[1234567890.]/i" />
+						</p:inputText>
+
+						<p:outputLabel for="@next" value="#{msgs.tar_alm}" />
+						<p:inputText required="true"
+							value="#{listaClienteBean.selectedUser.tarifaAlmacenamiento}">
+							<p:keyFilter regEx="/[1234567890.]/i" />
+						</p:inputText>
+
+						<p:outputLabel for="@next" value="#{msgs.tar_af}" />
+						<p:inputText required="true"
+							value="#{listaClienteBean.selectedUser.tarifaRefrigeracion}">
+							<p:keyFilter regEx="/[1234567890.]/i" />
+						</p:inputText>
+
+						<p:selectBooleanCheckbox itemLabel="#{msgs.cli_pref}"
+							value="#{listaClienteBean.selectedUser.clientePriorizado}" />
+						<br />
+
+						<p:row>
+							<p:column styleClass="ui-grid-col-12" style="text-align:center">
+								<p:commandButton value="#{msgs.btn_reg}" icon="pi pi-check"
+									style="width:20rem" styleClass="p-mr-2 p-mb-2"
+									actionListener="#{listaClienteBean.saveUser}"
+									update="manage-user-content"
+									process="manage-user-content @this" />
+								<p:spacer width="5"></p:spacer>
+								<p:commandButton type="button" icon="pi pi-times"
+									onclick="PF('manageClientDialog').hide()"
+									value="#{msgs.btn_canc}" style="width:20rem"
+									styleClass="p-mb-2" />
+
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:outputPanel>
+		</p:scrollPanel>
+
+	</p:dialog>
+</ui:composition>

@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Empresa" showEffect="fade" modal="true"
+		widgetVar="manageEmpresaViewDialog" responsive="true">
+		<p:outputPanel id="manage-viewuser-content" class="ui-fluid">
+			<p:outputPanel >
+				<p:panelGrid layout="grid" columns="2">
+					<h:panelGroup>
+							
+						<div class="p-field">
+							<p:outputLabel>Nombre:</p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Email:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Teléfono:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Dir postal:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Dir Gnrl:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Resp Dep Cont:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Jefe Recursos Hum:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Sec Gnrl:</p:outputLabel>
+							
+						</div>
+						
+					</h:panelGroup>
+					
+					<h:panelGroup> 
+						<div class="p-field">
+							<p:outputLabel><span>#{empresaBean.empresa.nomb_emp}</span> </p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{empresaBean.empresa.email_emp}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{empresaBean.empresa.telefono_emp}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{empresaBean.empresa.direccion_postal}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{empresaBean.empresa.nomb_dir_gen}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{empresaBean.empresa.nomb_resp_dep_cont}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{empresaBean.empresa.nomb_jefe_dep_recursos_hum}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{empresaBean.empresa.nom_sec_gen}</p:outputLabel>
+							
+						</div>
+						
+						
+					</h:panelGroup>
+					
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			
+		</f:facet>
+	</p:dialog>
+</ui:composition>

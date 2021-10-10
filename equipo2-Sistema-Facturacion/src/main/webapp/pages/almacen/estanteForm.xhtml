@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Datos Estante" showEffect="fade" modal="true"
+		widgetVar="estanteDialog" responsive="true">
+		
+		<p:outputPanel id="estante-datos" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty almacenBean.selectedEstante}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>								
+						
+						<div class="p-field">
+							<p:outputLabel for="@next">Fecha de inicio del mantenimiento</p:outputLabel>
+							<p:datePicker id="mantI" required="true" value="#{almacenBean.selectedEstante.fecha_inicio_mant}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="@next">Fecha del fin del mantenimiento</p:outputLabel>
+							<p:datePicker id="mantF" required="true" value="#{almacenBean.selectedEstante.fecha_final_mant}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="@next">Mantenimiento Activo</p:outputLabel>
+							<p:selectBooleanCheckbox id="mant-est" value="#{almacenBean.selectedEstante.mantActivo}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+						
+					</h:panelGroup>
+	
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{almacenBean.saveEstante}" update="estante-datos @this"/>
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				 onclick="PF('estanteDialog').hide()" class="ui-button-secondary"/>
+		</f:facet>
+	</p:dialog>
+</ui:composition>

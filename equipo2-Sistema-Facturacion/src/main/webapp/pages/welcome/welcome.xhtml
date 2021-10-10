@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+	<ui:define name="title">
+		    Inicio
+		</ui:define>
+	<ui:define name="layout">
+		<h:form>
+			<p:card style="width: 100%; margin-bottom: 2em">
+				<f:facet name="title">
+				        Bievenido #{userBean.username}
+				    </f:facet>
+
+				<p></p>
+				<sec:authorize access="hasAnyAuthority( 'guest')">
+					<ul>
+						<p>Funcionalidades de Usuarios Invitados:</p>
+
+						<li>Ver listados de clientes, servicios, compañias, etc</li>
+
+					</ul>
+				</sec:authorize>
+
+				<sec:authorize access="hasAnyAuthority( 'admin')">
+					<ul>
+						<p>Funcionalidades de Usuarios Administradores:</p>
+
+						<li>Crear, eliminar, actualizar y ver los usuarios.</li>
+
+					</ul>
+				</sec:authorize>
+
+				<sec:authorize access="hasAnyAuthority( 'manager')">
+					<ul>
+						<p>Funcionalidades de Usuarios Gerentes:</p>
+
+						<ul>
+							<p>Crear, eliminar, actualizar y ver listado de:</p>
+							<li>Clientes.</li>
+							<li>Almacenes</li>
+							<li>Compañias</li>
+						</ul>
+						<ul>Ver listado de servicios</ul>
+					</ul>
+				</sec:authorize>
+
+				<sec:authorize access="hasAnyAuthority( 'comercial')">
+					<ul>
+						<p>Funcionalidades de Usuarios Comerciales:</p>
+
+						<ul>
+							<p>Crear, eliminar, actualizar y ver listado de:</p>
+							<li>Clientes.</li>
+							<li>Almacenes</li>
+							<li>Compañias</li>
+							<li>Servicios</li>
+						</ul>
+
+					</ul>
+				</sec:authorize>
+			</p:card>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

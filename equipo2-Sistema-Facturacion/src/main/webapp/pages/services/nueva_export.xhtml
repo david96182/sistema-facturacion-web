@@ -1,0 +1,138 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+
+	<ui:define name="title">
+		    #{msgs.nuev_exp}
+	</ui:define>
+	<ui:define name="layout">
+
+		<h:form id="form">
+			<p:messages>
+            <p:autoUpdate/>
+        </p:messages>
+			<p:panelGrid columns="2" layout="flex"
+				styleClass="showcase-text-align-center" id="manage-user-content">
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>#{msgs.sel_cli}</h5>
+						<p:dataTable id="dtcliente" var="cliente"
+							value="#{exportBean.clientes}" selectionMode="single"
+							selection="#{exportBean.selectedClient}"
+							rowKey="#{cliente.email}" reflow="true" paginator="true"
+							rows="5" paginatorPosition="bottom" size="small" update="dtcarga">
+							<p:ajax event="rowSelect" listener="#{exportBean.onRowSelect}"
+								update=":form:dtcarga" />
+							<p:column headerText="#{msgs.nombrecli}">
+								<h:outputText value="#{cliente.nombCliente}" />
+							</p:column>
+
+
+							<p:column headerText="#{msgs.correo}">
+								<h:outputText value="#{cliente.email}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</p:outputPanel>
+
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>#{msgs.sel_comp}</h5>
+						<p:dataTable id="dtcompañia" var="company"
+							value="#{exportBean.companys}" selectionMode="single"
+							selection="#{exportBean.selectedCompany}"
+							rowKey="#{company.nameCompany}" reflow="true" paginator="true"
+							rows="5" paginatorPosition="bottom" size="small">
+							<p:column headerText="#{msgs.nombrecli}">
+								<h:outputText value="#{company.nameCompany}" />
+							</p:column>
+
+
+							<p:column headerText="#{msgs.tip}">
+								<h:outputText value="#{company.tipo}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</p:outputPanel>
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>#{msgs.sel_carg}</h5>
+						<p:dataTable id="dtcarga" var="carga"
+							value="#{exportBean.cargas}" selectionMode="single"
+							selection="#{exportBean.selectedCarga}"
+							rowKey="#{carga.idCarga}" reflow="true" paginator="true"
+							rows="5" paginatorPosition="bottom" size="small">
+							<p:column headerText="#{msgs.cod}">
+								<h:outputText value="#{carga.idCarga}" />
+							</p:column>
+
+							<p:column headerText="#{msgs.nombrecli}">
+								<h:outputText value="#{carga.nombCarga}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</p:outputPanel>
+
+
+				<p:outputPanel>
+					<div class="card">
+						<h5>#{msgs.exp_dat}</h5>
+						<p:panelGrid columns="4" layout="flex"
+							columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+							contentStyleClass="ui-fluid">
+
+							<p:outputLabel for="combustible" value="#{msgs.comb_req}" />
+							<p:inputText id="combustible" value="#{exportBean.combustible_req}" required="true"> 
+							<p:keyFilter regEx="/[1234567890.]/i" /> 
+							<f:validateDoubleRange minimum="0.1"/>
+							<p:ajax process=":form:dtcarga @this" update=":form:importe" listener="#{exportBean.calcImporte}"></p:ajax>
+							</p:inputText>
+
+							<p:outputLabel for="salida" value="#{msgs.fech_sal}" />
+							<p:datePicker id="salida" showTime="true" locale="de"
+								pattern="dd.MM.yyyy" required="true" value="#{exportBean.fecha_salida}" mindate="#{exportBean.today}"/>
+
+						
+							<p:outputLabel for="importe" value="#{msgs.imp_tot}" />
+							<p:inputText id="importe" required="true" value="#{exportBean.importe_total}" disabled="true">  
+							<p:keyFilter regEx="/[1234567890.]/i" /> 
+							<f:validateDoubleRange minimum="0.1"/>
+							</p:inputText>
+							
+ 							<br/>
+							<p:spacer></p:spacer>
+							<p:commandButton value="#{msgs.reg}" styleClass="p-mr-2 p-mb-2"
+								style="width: auto;margin-left:9em" actionListener="#{exportBean.registrarExport}"
+								update=":form:manage-user-content" process=":form:manage-user-content @this" />
+
+							<p:commandButton value="#{msgs.btn_limp}" styleClass="p-mb-2"
+								style="width: auto;margin-left:10em" update=":form:manage-user-content" type="reset" />
+							
+						</p:panelGrid>
+					</div>
+				</p:outputPanel>
+
+
+			</p:panelGrid>
+
+
+		</h:form>
+
+	</ui:define>
+
+
+</ui:composition>
+</html>

@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Datos Piso" showEffect="fade" modal="true"
+		widgetVar="pisoDialog" responsive="true">
+		
+		<p:outputPanel id="piso-datos" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty almacenBean.selectedPiso}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+			
+						<div class="p-field">
+							<p:outputLabel for="@next">Fecha de inicio del mantenimiento</p:outputLabel>
+							<p:datePicker id="mantI" required="true" value="#{almacenBean.selectedPiso.fecha_inicio_mant}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="@next">Fecha del fin del mantenimiento</p:outputLabel>
+							<p:datePicker id="mantF" required="true" value="#{almacenBean.selectedPiso.fecha_final_mant}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="@next">Mantenimiento Activo</p:outputLabel>
+							<p:selectBooleanCheckbox id="mant-piso" value="#{almacenBean.selectedPiso.mantActivo}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+					</h:panelGroup>
+	
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{almacenBean.savePiso}" update="piso-datos @this"/>
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				  onclick="PF('pisoDialog').hide()" class="ui-button-secondary"/>
+		</f:facet>
+	</p:dialog>
+</ui:composition>

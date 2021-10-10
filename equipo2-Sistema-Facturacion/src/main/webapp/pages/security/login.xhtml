@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+	<title>#{msgs.title_login}</title>
+	<h:outputStylesheet name="primeflex.min.css" library="css"></h:outputStylesheet>
+	<h:outputStylesheet name="styles.css" library="css"></h:outputStylesheet>
+	<f:loadBundle basename="i18n.language" var="msgs" />
+</h:head>
+
+<h:body>
+	<p:spacer height="50"></p:spacer>
+	<div class="p-grid p-jc-center">
+
+		<div class="p-col-12 p-md-6 p-lg-3 p-text-center ">
+			<p:outputLabel>
+				<h1>#{msgs.nomb_empresa}</h1>
+				<p:outputLabel value="#{msgs.descrip_empresa}"></p:outputLabel>
+			</p:outputLabel>
+		</div>
+		<div class="p-col-12 p-md-6 p-lg-3 p-text-center">
+			<h:form>
+				<p:growl for="securityMessages"  globalOnly="true" showDetail="true" showSummary="false" />	
+				<p:card>
+					<p:panelGrid columns="1" layout="grid">
+						<h:panelGroup>
+							<p:outputLabel for="@next" value="#{msgs.label_username}" />
+							<p:inputText value="#{userBean.username}" style="width:100%"
+								required="true" />
+							<p:message for="@previous" />
+						</h:panelGroup>
+
+						<h:panelGroup>
+							<p:outputLabel for="@next" value="#{msgs.label_password}" />
+							<p:password style="width:100%" value="#{userBean.password}"
+								required="true" />
+							<p:message for="@previous" />
+						</h:panelGroup>
+					</p:panelGrid>
+
+					<f:facet name="footer">
+						<p:commandButton ajax="false" icon="pi pi-sign-in"
+							value="#{msgs.btn_login}" action="#{userBean.login}" />
+					</f:facet>
+				</p:card>
+
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,149 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+
+	<ui:define name="title">
+		    Listado de servicios
+	</ui:define>
+	<ui:define name="layout">
+		<h:form id="form">
+			<p:outputPanel>
+				<div class="card">
+					<p:accordionPanel widgetVar="basic">
+						<p:tab title="Opciones de visualización">
+
+							<div>
+							<p:outputLabel value="Mostrar:" />
+							<p:spacer width="30"></p:spacer>
+							<p:selectOneMenu  id="option" value="#{servicesBean.selectmenu}">
+								<f:selectItem itemLabel="Select One" itemValue="-1" />
+								<f:selectItem itemLabel="Todos los servicios"
+									itemValue="-1" />
+								<f:selectItem itemLabel="Importaciones" itemValue="importacion" />
+								<f:selectItem itemLabel="Exportaciones" itemValue="exportacion" />
+								<p:ajax event="change" update=":form:dt-servicios"
+									listener="#{servicesBean.onItemSelect()}" >
+								</p:ajax>
+							</p:selectOneMenu>
+							</div>
+
+
+
+						</p:tab>
+					</p:accordionPanel>
+				</div>
+			</p:outputPanel>
+
+			<div class="card crud-demo">
+				<p:toolbar>
+					<p:toolbarGroup>
+
+
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right">
+
+						<p:commandButton value="Exportar" icon="pi pi-upload"
+							styleClass="ui-button-help" ajax="false">
+							<p:dataExporter type="pdf" target="dt-servicios"
+								fileName="servicios" />
+						</p:commandButton>
+					</p:toolbarGroup>
+				</p:toolbar>
+
+
+				<p:dataTable id="dt-servicios" widgetVar="dtServicios"
+					var="servicio" value="#{servicesBean.servicios}" reflow="true"
+					paginator="true" rows="10" paginatorPosition="bottom" size="small">
+					<f:facet name="header">
+						<div class="products-table-header">
+							<span style="font-weight: bold">Servicios</span> <span
+								class="filter-container ui-input-icon-left"> <i
+								class="pi pi-search"></i> <p:inputText id="globalFilter"
+									onkeyup="PF('dtServicios').filter()"
+									placeholder="#{msgs.buscar}" />
+							</span>
+
+						</div>
+					</f:facet>
+
+
+					<p:column headerText="Código" sortBy="#{servicio.cod_servicio}"
+						filterBy="#{servicio.cod_servicio}">
+						<h:outputText value="#{servicio.cod_servicio}" />
+					</p:column>
+					<p:column headerText="Tipo" sortBy="#{servicio.tipo_movimiento}"
+						filterBy="#{servicio.tipo_movimiento}">
+						<h:outputText value="#{servicio.tipo_movimiento}" />
+					</p:column>
+					<p:column headerText="Cliente" sortBy="#{servicio.email_cliente}"
+						filterBy="#{servicio.email_cliente}">
+						<h:outputText value="#{servicio.email_cliente}" />
+					</p:column>
+					<p:column headerText="Compañia" sortBy="#{servicio.nomb_comp}">
+						<h:outputText value="#{servicio.nomb_comp}" />
+					</p:column>
+					<p:column headerText="Código de Carga" sortBy="#{servicio.idCarga}"
+						filterBy="#{servicio.idCarga}">
+						<h:outputText value="#{servicio.idCarga}" />
+					</p:column>
+
+
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-search"
+							action="#{servicesBean.openForEdit}"
+							update=":form:manage-viewservice-content"
+							oncomplete="PF('manageServiceViewDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{servicio}"
+								target="#{servicesBean.selectedServicio}" />
+						</p:commandButton>
+						<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+							<p:commandButton icon="pi pi-pencil"
+								action="#{servicesBean.openForEdit}"
+								update=":form:manage-servicio-content"
+								oncomplete="PF('manageServicioDialog').show()"
+								styleClass="edit-button rounded-button ui-button-success"
+								process="@this">
+								<f:setPropertyActionListener value="#{servicio}"
+									target="#{servicesBean.selectedServicio}" />
+								<p:resetInput target=":form:manage-servicio-content" />
+							</p:commandButton>
+							<p:commandButton class="ui-button-warning rounded-button"
+								icon="pi pi-trash" process="@this"
+								action="#{servicesBean.deleteServicio}">
+								<f:setPropertyActionListener value="#{servicio}"
+									target="#{servicesBean.selectedServicio}" />
+								<p:confirm header="#{msgs.btn_confirm}"
+									message="Está seguro de eliminar el servicio?"
+									icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+						</sec:authorize>
+					</p:column>
+
+
+				</p:dataTable>
+
+				<ui:include src="edit_servicio.xhtml"></ui:include>
+				<ui:include src="view_service.xhtml"></ui:include>
+
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</div>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+</html>

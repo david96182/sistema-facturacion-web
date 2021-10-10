@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Company" showEffect="fade" modal="true"
+		widgetVar="manageUserDialog" responsive="true">
+		<p:outputPanel id="manage-user-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty companyBean.selectedCompany}">
+				<p:panelGrid layout="grid" columns="2">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next">Nombre Completo</p:outputLabel>
+							<p:inputText id="name" required="true" 
+								value="#{companyBean.selectedCompany.nameCompany}" />
+							<p:message for="@previous" ></p:message>
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next">Tipo</p:outputLabel>
+							<p:inputText id="tipo" required="true" 
+								value="#{companyBean.selectedCompany.tipo}" />
+							<p:message for="@previous" ></p:message>
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next">Codigo</p:outputLabel>
+							<p:inputText id="cod" required="true"
+								value="#{companyBean.selectedCompany.id}"
+								maxlength="11">
+								<p:keyFilter mask="num" />
+							</p:inputText>
+							<p:message for="@previous"></p:message>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup>
+					    <div class="p-field">
+							<p:outputLabel for="@next" >Niveles de Seguridad</p:outputLabel>
+							<p:selectCheckboxMenu id="niveles" required="true"
+								value="#{companyBean.selectedNiveles}" label="Seleccione"
+								style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem"
+								scrollHeight="250" >
+								<f:selectItems value="#{companyBean.niveles}" var="caracteristicas"
+									itemLabel="#{caracteristicas.roleName}" itemValue="#{caracteristicas.id}" />
+							</p:selectCheckboxMenu>
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" >Criterios</p:outputLabel>
+							<p:selectCheckboxMenu id="criterios" required="true"
+								value="#{companyBean.selectedCriterios}" label="Seleccione"
+								style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem"
+								scrollHeight="250" >
+								<f:selectItems value="#{companyBean.criterios}" var="caracteristicas"
+									itemLabel="#{caracteristicas.roleName}" itemValue="#{caracteristicas.id}" />
+							</p:selectCheckboxMenu>
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" >Alternativas de Prioridad</p:outputLabel>
+							<p:selectCheckboxMenu id="alter" required="true"
+								value="#{companyBean.selectedAlternativas}" label="Seleccione"
+								style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem"
+								scrollHeight="250" >
+								<f:selectItems value = "#{companyBean.alternativas}" var="caracteristicas"
+									itemLabel="#{caracteristicas.roleName}" itemValue="#{caracteristicas.id}" />
+							</p:selectCheckboxMenu>
+						</div>
+						
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{companyBean.saveUser}"
+				update="manage-user-content" process="manage-user-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('manageUserDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Carga" showEffect="fade" modal="true"
+		widgetVar="manageCargaDialog" responsive="true">
+		<p:outputPanel id="manage-carga-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty cargasBean.selectedcarga}">
+				<p:panelGrid columns="1" layout="flex"
+					styleClass="showcase-text-align-center">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="textB1" value="Nombre" />
+							<p:inputText id="textB1" required="true"
+								value="#{cargasBean.selectedcarga.nombCarga}">
+
+							</p:inputText>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="textB2" value="Tipo de Producto" />
+							<p:inputText id="textB2" required="true"
+								value="#{cargasBean.selectedcarga.tipoProducto}">
+								<p:keyFilter regEx="/[ABCDEFGHIJKLMNÑOPQRSTUVWXYZ]/i" />
+							</p:inputText>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="checkboxB" value="#{msgs.cond_ref}" />
+							<p:selectBooleanCheckbox id="checkboxB"
+								value="#{cargasBean.selectedcarga.condRefrigeracion}">
+							</p:selectBooleanCheckbox>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.can_paq}" />
+							<p:spinner id="minMax" min="1" max="100" disabled="true"
+								value="#{cargasBean.selectedcarga.cantPaquetes}" />
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="peso" value="#{msgs.peso_Uemp}" />
+							<p:inputText id="peso" value="#{cargasBean.selectedcarga.pesoUnidad_Empaquetado}">
+								<p:keyFilter regEx="/[1234567890.]/i" />
+								<f:validateDoubleRange minimum="0.1" />
+							</p:inputText>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="selectOneB" value="#{msgs.tip_emp}" />
+							<p:selectOneMenu id="selectOneB"
+								value="#{cargasBean.selectedcarga.tipoEmpaquetado}" required="true">
+								<f:selectItem itemLabel="Select One" itemValue="" />
+								<f:selectItem itemLabel="prensado" itemValue="prensado" />
+								<f:selectItem itemLabel="primario" itemValue="primario" />
+								<f:selectItem itemLabel="secundario" itemValue="secundario" />
+								<f:selectItem itemLabel="terciario" itemValue="terciario" />
+							</p:selectOneMenu>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="vencimiento" value="#{msgs.fech_ven}" />
+							<p:datePicker id="vencimiento" showIcon="true" style="width:auto"
+								value="#{cargasBean.selectedcarga.fechaVencimiento}" />
+						</div>
+
+
+
+
+
+
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{cargasBean.saveCarga}"
+				update="manage-carga-content" process="manage-carga-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('manageCargaDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

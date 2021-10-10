@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Paquete" showEffect="fade" modal="true"
+		widgetVar="managePaqueteDialog" responsive="true">
+		<p:outputPanel id="manage-paquete-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty cargasBean.selectedpaq}">
+				<p:panelGrid layout="grid" columns="2">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next">Codigo de carga</p:outputLabel>
+							<p:inputText id="codcarga" required="true" 
+								value="#{cargasBean.selectedpaq.idCarga}" disabled="true"/>
+							<p:message for="@previous" ></p:message>
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next">Codigo de Paquete</p:outputLabel>
+							<p:inputText id="codpaq" required="true"
+								value="#{cargasBean.selectedpaq.cod_paquete}" disabled="true" />
+							<p:message for="@previous"></p:message>
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next">Tipo de Empaquetado</p:outputLabel>
+							<p:inputText id="ci" required="true"
+								value="#{cargasBean.selectedpaq.tipo_paquete}" >
+								
+							</p:inputText>
+							<p:message for="@previous"></p:message>
+						</div>
+						
+						
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{cargasBean.savePaquete}"
+				update="manage-paquete-content" process="manage-paquete-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('managePaqueteDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Carga" showEffect="fade" modal="true"
+		widgetVar="manageCargaViewDialog" responsive="true" width="30%">
+		<p:outputPanel id="manage-viewcarga-content" class="ui-fluid">
+			<p:outputPanel >
+				<p:panelGrid layout="grid" columns="2">
+					<h:panelGroup>
+							
+						<div class="p-field">
+							<p:outputLabel>Código:</p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Nombre:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Tipo de producto:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Cond. Refrigeración:</p:outputLabel>
+							
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel>Tipo de empaque:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Peso:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Fecha de ingreso:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Fecha de salida:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Fecha de salida(plan):</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Fecha de Venc.:</p:outputLabel>
+							
+						</div>
+					</h:panelGroup>
+					
+					<h:panelGroup> 
+						<div class="p-field">
+							<p:outputLabel><span>#{cargasBean.selectedcarga.idCarga}</span> </p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{cargasBean.selectedcarga.nombCarga}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{cargasBean.selectedcarga.tipoProducto}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{cargasBean.selectedcarga.condRefrigeracion}</p:outputLabel>
+							
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel>#{cargasBean.selectedcarga.tipoEmpaquetado}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{cargasBean.selectedcarga.pesoUnidad_Empaquetado}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<h:outputLabel value="#{cargasBean.selectedcarga.fechaIngreso}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+							<!--  <p:outputLabel>#{cargasBean.selectedcarga.fechaIngreso}</p:outputLabel> -->
+							</h:outputLabel>
+						</div>
+						<div class="p-field">
+							<h:outputText value="#{cargasBean.selectedcarga.fechaSalida}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+							<!-- <p:outputLabel>#{cargasBean.selectedcarga.fechaSalida}</p:outputLabel> -->
+							</h:outputText>
+						</div>
+						<div class="p-field" style="margin-top: 1em">
+							<h:outputText value="#{cargasBean.selectedcarga.horaSalida_Plan}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+							<!-- <p:outputLabel>#{cargasBean.selectedcarga.horaSalida_Plan}</p:outputLabel> -->
+							</h:outputText>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{cargasBean.selectedcarga.fechaVencimiento}</p:outputLabel>
+							
+						</div>
+						
+					</h:panelGroup>
+					
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('manageCargaViewDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

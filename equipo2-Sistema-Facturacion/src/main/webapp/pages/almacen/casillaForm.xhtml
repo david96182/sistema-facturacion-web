@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Datos Casilla" showEffect="fade" modal="true"
+		widgetVar="casillaDialog" responsive="true">
+		
+		<p:outputPanel id="casilla-datos" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty almacenBean.selectedCasilla}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+			
+						<div class="p-field">
+							<p:outputLabel for="@next">Fecha de inicio del mantenimiento</p:outputLabel>
+							<p:datePicker id="mantI" required="true" value="#{almacenBean.selectedCasilla.fecha_inicio_mant}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="@next">Fecha del fin del mantenimiento</p:outputLabel>
+							<p:datePicker id="mantF" required="true" value="#{almacenBean.selectedCasilla.fecha_final_mant}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="@next">Mantenimiento Activo</p:outputLabel>
+							<p:selectBooleanCheckbox id="mant-casilla" value="#{almacenBean.selectedCasilla.mantActivo}"/>
+							<p:message for="@previous"></p:message>
+						</div>
+					</h:panelGroup>
+	
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{almacenBean.saveCasilla}" update="casilla-datos @this"/>
+			<p:commandButton value="Reset" icon="pi pi-times"
+				 onclick="PF('casillaDialog').hide()" class="ui-button-secondary"/>
+		</f:facet>
+	</p:dialog>
+</ui:composition>

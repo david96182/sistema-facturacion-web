@@ -1,0 +1,423 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+	<!--
+	<ui:define name="Almacén">
+		    Listado de  Almacenes
+	</ui:define>
+-->
+	<ui:define name="layout">
+		<div class="p-grid nested-grid">
+
+			<div class="p-col-4">
+
+				<h:form id="formAlm">
+					<div class="card crud-demo">
+						<p:toolbar>
+
+							<p:toolbarGroup>
+			   		Listado de  Almacenes
+			   </p:toolbarGroup>
+							<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+								<p:toolbarGroup>
+									<p:commandButton value="Nuevo Almacén" icon="pi pi-plus"
+										actionListener="#{almacenBean.newAlmacen}"
+										update=":formAlm:almacen-datos"
+										oncomplete="PF('almacenDialog').show()"
+										styleClass="ui-button-success" style="margin-right: .5rem">
+										<p:resetInput target=":formAlm:almacen-datos" />
+									</p:commandButton>
+								</p:toolbarGroup>
+							</sec:authorize>
+						</p:toolbar>
+
+						<p:dataTable id="dt-almacenes" widgetVar="dtalmacenes" var="alm"
+						    update="dt-estantes" selectionMode="single" selection="#{almacenBean.selectedAlmacen}"
+							value="#{almacenBean.almacenes}" reflow="true" paginator="true"
+							rowKey="#{alm.idAlmacen}" rows="10" paginatorPosition="bottom"
+							size="small">
+
+							<!--
+					update="dt-estantes" selectionMode="single" >
+					-->
+							<f:facet name="header">
+								<div class="products-table-header">
+									<span style="font-weight: bold">Almacenes</span> <span
+										class="filter-container ui-input-icon-left"> <i
+										class="pi pi-search"></i> <p:inputText id="globalFilter"
+											onkeyup="PF('dtalmacenes').filter()" placeholder="Buscar" />
+									</span>
+
+								</div>
+							</f:facet>
+
+						
+					<p:ajax event="rowSelect" listener="#{almacenBean.onRowSelectAlmacenTable}"
+					update="formEst:dt-estantes"/>
+					
+							<p:column headerText="Almacén" sortBy="#{alm.idAlmacen}"
+								filterBy="#{alm.idAlmacen}">
+								<h:outputText value="#{alm.idAlmacen}" />
+							</p:column>
+							<p:column headerText="Fecha I" sortBy="#{alm.fecha_inicio_mant}"
+								filterBy="#{alm.fecha_inicio_mant}">
+								<h:outputText value="#{alm.fecha_inicio_mant}" />
+							</p:column>
+							<p:column headerText="Fecha F" sortBy="#{alm.fecha_final_mant}"
+								filterBy="#{alm.fecha_final_mant}">
+								<h:outputText value="#{alm.fecha_final_mant}" />
+							</p:column>
+
+							<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+								<p:column exportable="false">
+									<p:commandButton icon="pi pi-pencil"
+										action="#{almacenBean.openForEdit}"
+										update=":formAlm:almacen-datos"
+										oncomplete="PF('almacenDialog').show()"
+										styleClass="edit-button rounded-button ui-button-success"
+										process="@this">
+										<f:setPropertyActionListener value="#{alm}"
+											target="#{almacenBean.selectedAlmacen}" />
+										<p:resetInput target=":formAlm:almacen-datos" />
+									</p:commandButton>
+									<p:commandButton class="ui-button-warning rounded-button"
+										icon="pi pi-trash" process="@this"
+										action="#{almacenBean.deleteAlmacen}">
+										<f:setPropertyActionListener value="#{alm}"
+											target="#{almacenBean.selectedAlmacen}" />
+										<p:confirm header="Confirmar"
+											message="Está seguro de eliminar el almacén?"
+											icon="pi pi-exclamation-triangle" />
+									</p:commandButton>
+								</p:column>
+							</sec:authorize>
+
+						</p:dataTable>
+
+						<!-- ui:include es una etiqueta de facelet que permite incluir pages y de esta forma el code no se carga tanto -->
+						<ui:include src="almacenForm.xhtml"></ui:include>
+
+						<p:confirmDialog global="true" showEffect="fade" width="300">
+							<p:commandButton value="Si" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no ui-button-secondary"
+								icon="pi pi-times" />
+						</p:confirmDialog>
+					</div>
+				</h:form>
+			</div>
+
+			<!-- COLUMNA DEL MEDIO  -->
+
+
+			<div class="p-col-4">
+				<div class="p-grid">
+					<div class="p-col-12">
+
+						<h:form id="formEst">
+							<div class="card crud-demo">
+								<p:toolbar>
+				<p:toolbarGroup>
+				  Listado de  Estantes
+				</p:toolbarGroup>
+									
+				<p:toolbarGroup>
+				
+					<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+					 <p:commandButton value="Nuevo Estante" icon="pi pi-plus"
+							actionListener="#{almacenBean.newEstante}"
+							update=":formEst:estante-datos"
+							oncomplete="PF('estanteDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":formEst:estante-datos" />
+						</p:commandButton>
+						</sec:authorize>
+				</p:toolbarGroup>
+				
+								</p:toolbar>
+
+								<p:dataTable id="dt-estantes" widgetVar="dtestantes" var="est"								    
+									rowKey="#{est.cod_estante}"  value="#{almacenBean.estantes}"
+									reflow="true" paginator="true" rows="5"
+									paginatorPosition="bottom" size="small"
+									selectionMode="single" selection="#{almacenBean.selectedEstante}" update="dt-pisos">
+									<f:facet name="header">
+										<div class="products-table-header">
+											<span style="font-weight: bold">Estantes</span> <span
+												class="filter-container ui-input-icon-left"> <i
+												class="pi pi-search"></i> <p:inputText id="globalFilter"
+													onkeyup="PF('dtestantes').filter()" placeholder="Buscar" />
+											</span>
+
+										</div>
+									</f:facet>
+									
+									<p:ajax event="rowSelect" listener="#{almacenBean.onRowSelectEstanteTable}"
+									update="formPiso:dt-pisos"/>
+
+
+									<p:column headerText="Estante" sortBy="#{est.cod_estante}"
+										filterBy="#{est.cod_estante}">
+										<h:outputText value="#{est.cod_estante}" />
+									</p:column>
+
+									<p:column headerText="Fecha I"
+										sortBy="#{est.fecha_inicio_mant}"
+										filterBy="#{est.fecha_inicio_mant}">
+										<h:outputText value="#{est.fecha_inicio_mant}" />
+									</p:column>
+
+									<p:column headerText="Fecha F" sortBy="#{est.fecha_final_mant}"
+										filterBy="#{est.fecha_final_mant}">
+										<h:outputText value="#{est.fecha_final_mant}" />
+									</p:column>
+						
+					<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">				
+					<p:column exportable="false">
+					
+						<p:commandButton icon="pi pi-pencil" action="#{almacenBean.openForEdit}"
+							update=":formEst:estante-datos"
+							oncomplete="PF('estanteDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{est}"
+								target="#{almacenBean.selectedEstante}" />
+							<p:resetInput target=":formEstante:estante-datos" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button"
+							icon="pi pi-trash" process="@this" 
+							action="#{almacenBean.deleteEstante}" >
+							<f:setPropertyActionListener value="#{est}"
+								target="#{almacenBean.selectedEstante}" />
+							<p:confirm header="Confirmar" message="Está seguro de eliminar el estante?" icon="pi pi-exclamation-triangle"/>
+						</p:commandButton>
+						
+					</p:column>
+					</sec:authorize>
+				
+								</p:dataTable>
+
+
+								<ui:include src="estanteForm.xhtml"></ui:include>
+
+								<!-- Este comoponente se utiliza mucho para el caso de los eliminar, que es donde casi siempre se necesita confirmation,
+				su uso es bien sencillo, cada confirmDialog va atado a un p:confirm que es el que se definie dentro del button -->
+								<p:confirmDialog global="true" showEffect="fade" width="300">
+									<p:commandButton value="Si" type="button"
+										styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no ui-button-secondary"
+										icon="pi pi-times" />
+								</p:confirmDialog>
+
+							</div>
+						</h:form>
+					</div>
+
+					<!-- COLUMNA DEL MEDIO SEGUNDA MITAD  -->
+
+
+					<div class="p-col-12">
+
+						<h:form id="formPiso">
+							<div class="card crud-demo">
+								<p:toolbar>
+
+				<p:toolbarGroup>
+			   		Listado de  Pisos
+			   </p:toolbarGroup>
+			   
+					<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+					<p:toolbarGroup>
+				
+					 <p:commandButton value="Nuevo Piso" icon="pi pi-plus"
+							actionListener="#{almacenBean.newPiso}"
+							update=":formPiso:piso-datos"
+							oncomplete="PF('pisoDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":formPiso:piso-datos" />
+						</p:commandButton>
+						
+				   </p:toolbarGroup>
+				   </sec:authorize>
+								</p:toolbar>
+
+								<p:dataTable id="dt-pisos" widgetVar="dtpisos" var="piso"
+									value="#{almacenBean.pisos}" reflow="true" paginator="true"
+									rows="5" paginatorPosition="bottom" size="small"
+									rowKey="#{piso.numPiso}" selectionMode="single" selection="#{almacenBean.selectedPiso}"
+									update="dt-casillas">
+									<f:facet name="header">
+										<div class="products-table-header">
+											<span style="font-weight: bold">Pisos</span> <span
+												class="filter-container ui-input-icon-left"> <i
+												class="pi pi-search"></i> <p:inputText id="globalFilter"
+													onkeyup="PF('dtpisos').filter()" placeholder="Buscar" />
+											</span>
+
+										</div>
+									</f:facet>
+									
+									<p:ajax event="rowSelect" listener="#{almacenBean.onRowSelectPisoTable}"
+									update="formCasilla:dt-casillas"/>
+
+
+									<p:column headerText="Piso" sortBy="#{piso.numPiso}"
+										filterBy="#{piso.numPiso}">
+										<h:outputText value="#{piso.numPiso}" />
+									</p:column>
+
+									<p:column headerText="Fecha I"
+										sortBy="#{piso.fecha_inicio_mant}"
+										filterBy="#{piso.fecha_inicio_mant}">
+										<h:outputText value="#{piso.fecha_inicio_mant}" />
+									</p:column>
+
+									<p:column headerText="Fecha F"
+										sortBy="#{piso.fecha_final_mant}"
+										filterBy="#{piso.fecha_final_mant}">
+										<h:outputText value="#{piso.fecha_final_mant}" />
+									</p:column>
+									
+					<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+								<p:column exportable="false">
+									<p:commandButton icon="pi pi-pencil"
+										action="#{almacenBean.openForEdit}"
+										update=":formPiso:piso-datos"
+										oncomplete="PF('pisoDialog').show()"
+										styleClass="edit-button rounded-button ui-button-success"
+										process="@this">
+										<f:setPropertyActionListener value="#{piso}"
+											target="#{almacenBean.selectedPiso}" />
+										<p:resetInput target=":formPiso:piso-datos" />
+									</p:commandButton>
+									<p:commandButton class="ui-button-warning rounded-button"
+										icon="pi pi-trash" process="@this"
+										action="#{almacenBean.deletePiso}">
+										<f:setPropertyActionListener value="#{piso}"
+											target="#{almacenBean.selectedPiso}" />
+										<p:confirm header="Confirmar"
+											message="Está seguro de eliminar el piso?"
+											icon="pi pi-exclamation-triangle" />
+									</p:commandButton>
+								</p:column>
+							
+						</sec:authorize>
+					
+								</p:dataTable>
+
+								<!-- ui:include es una etiqueta de facelet que permite incluir pages y de esta forma el code no se carga tanto -->
+								<ui:include src="pisoForm.xhtml"></ui:include>
+
+							</div>
+
+						</h:form>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- COLUMNA DERECHA  -->
+
+			<div class="p-col-4 ">
+				<h:form id="formCasilla">
+					<div class="card crud-demo">
+						<p:toolbar>
+							<p:toolbarGroup>
+			   		Listado de  Casillas
+			   </p:toolbarGroup>
+			   
+			   <sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+			   <p:toolbarGroup>
+				
+					 <p:commandButton value="Nueva Casilla" icon="pi pi-plus"
+							actionListener="#{almacenBean.newCasilla}"
+							update=":formCasilla:casilla-datos"
+							oncomplete="PF('casillaDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":formCasilla:casilla-datos" />
+						</p:commandButton>
+				</p:toolbarGroup>
+				</sec:authorize>
+						</p:toolbar>
+
+						<p:dataTable id="dt-casillas" widgetVar="dtcasillas" var="cas"
+							value="#{almacenBean.casillas}" reflow="true" paginator="true"
+							rows="10" paginatorPosition="bottom" size="small">
+							<f:facet name="header">
+								<div class="products-table-header">
+									<span style="font-weight: bold">Casillas</span> <span
+										class="filter-container ui-input-icon-left"> <i
+										class="pi pi-search"></i> <p:inputText id="globalFilter"
+											onkeyup="PF('dtcasillas').filter()" placeholder="Buscar" />
+									</span>
+
+								</div>
+							</f:facet>
+							
+							
+
+
+							<p:column headerText="Casilla" sortBy="#{cas.idCasilla}"
+								filterBy="#{cas.idCasilla}">
+								<h:outputText value="#{cas.idCasilla}" />
+							</p:column>
+
+							<p:column headerText="Fecha I" sortBy="#{cas.fecha_inicio_mant}"
+								filterBy="#{cas.fecha_inicio_mant}">
+								<h:outputText value="#{cas.fecha_inicio_mant}" />
+							</p:column>
+
+							<p:column headerText="Fecha F" sortBy="#{cas.fecha_final_mant}"
+								filterBy="#{cas.fecha_final_mant}">
+								<h:outputText value="#{cas.fecha_final_mant}" />
+							</p:column>
+							
+							<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+								<p:column exportable="false">
+									<p:commandButton icon="pi pi-pencil"
+										action="#{almacenBean.openForEdit}"
+										update=":formCasilla:casilla-datos"
+										oncomplete="PF('casillaDialog').show()"
+										styleClass="edit-button rounded-button ui-button-success"
+										process="@this">
+										<f:setPropertyActionListener value="#{cas}"
+											target="#{almacenBean.selectedCasilla}" />
+										<p:resetInput target=":formCasilla:casilla-datos" />
+									</p:commandButton>
+									<p:commandButton class="ui-button-warning rounded-button"
+										icon="pi pi-trash" process="@this"
+										action="#{almacenBean.deleteCasilla}">
+										<f:setPropertyActionListener value="#{cas}"
+											target="#{almacenBean.selectedCasilla}" />
+										<p:confirm header="Confirmar"
+											message="Está seguro de eliminar la casilla?"
+											icon="pi pi-exclamation-triangle" />
+									</p:commandButton>
+								</p:column>
+							</sec:authorize>
+						</p:dataTable>
+
+						<!-- ui:include es una etiqueta de facelet que permite incluir pages y de esta forma el code no se carga tanto -->
+						<ui:include src="casillaForm.xhtml"></ui:include>
+
+
+
+					</div>
+				</h:form>
+			</div>
+
+
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>
+

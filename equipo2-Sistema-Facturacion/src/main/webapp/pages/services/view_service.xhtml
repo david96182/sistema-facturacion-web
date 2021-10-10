@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Servicio" showEffect="fade" modal="true"
+		widgetVar="manageServiceViewDialog" responsive="true" width="30%">
+		<p:outputPanel id="manage-viewservice-content" class="ui-fluid">
+			<p:outputPanel >
+				<p:panelGrid layout="grid" columns="2">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel>Código de servicio:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Carga:</p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Cliente:</p:outputLabel>
+							
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel>Combustible:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Importe total:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Compañía:</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>Tipo de movimiento:</p:outputLabel>
+							
+						</div>
+						
+					</h:panelGroup>
+					
+					<h:panelGroup> 
+					    <div class="p-field">
+							<p:outputLabel>#{servicesBean.selectedServicio.cod_servicio}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel><span>#{servicesBean.selectedServicio.idCarga}</span> </p:outputLabel>
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{servicesBean.selectedServicio.email_cliente}</p:outputLabel>
+							
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel>#{servicesBean.selectedServicio.combustible_requerido}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{servicesBean.selectedServicio.importe_total}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{servicesBean.selectedServicio.nomb_comp}</p:outputLabel>
+							
+						</div>
+						<div class="p-field">
+							<p:outputLabel>#{servicesBean.selectedServicio.tipo_movimiento}</p:outputLabel>
+							
+						</div>
+						
+					</h:panelGroup>
+					
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('manageServiceViewDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

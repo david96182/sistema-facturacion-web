@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+
+	<ui:define name="title">
+		    #{msgs.lis_cli}
+	</ui:define>
+	<ui:define name="layout">
+		<h:form id="form">
+			<div class="card crud-demo">
+				<p:toolbar>
+					<p:toolbarGroup>
+						<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+							<p:commandButton value="#{msgs.nuevo}" icon="pi pi-plus"
+								actionListener="#{listaClienteBean.openNew}"
+								update=":form:manage-user-content"
+								oncomplete="PF('manageClientDialog').show()"
+								styleClass="ui-button-success" style="margin-right: .5rem">
+								<p:resetInput target=":form:manage-user-content" />
+							</p:commandButton>
+						</sec:authorize>
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right">
+
+						<p:commandButton value="#{msgs.exportar}" icon="pi pi-upload"
+							styleClass="ui-button-help" ajax="false">
+							<p:dataExporter type="pdf" target="dt-clientes"
+								fileName="clientes" />
+						</p:commandButton>
+					</p:toolbarGroup>
+				</p:toolbar>
+
+
+				<p:dataTable id="dt-clientes" widgetVar="dtClientes" var="cliente"
+					value="#{listaClienteBean.clientes}" reflow="true" paginator="true"
+					rows="10" paginatorPosition="bottom" stripedRows="true"
+					size="small">
+					<f:facet name="header">
+						<div class="products-table-header">
+							<span style="font-weight: bold">#{msgs.clientes}</span> <span
+								class="filter-container ui-input-icon-left"> <i
+								class="pi pi-search"></i> <p:inputText id="globalFilter"
+									onkeyup="PF('dtClientes').filter()"
+									placeholder="#{msgs.buscar}" />
+							</span>
+
+						</div>
+					</f:facet>
+
+
+					<p:column headerText="#{msgs.nombrecli}"
+						sortBy="#{cliente.nombCliente}" filterBy="#{cliente.nombCliente}">
+						<h:outputText value="#{cliente.nombCliente}" />
+					</p:column>
+					<p:column headerText="#{msgs.pais}" sortBy="#{cliente.paisCliente}"
+						filterBy="#{cliente.paisCliente}">
+						<h:outputText value="#{cliente.paisCliente}" />
+					</p:column>
+					<p:column headerText="#{msgs.correo}" sortBy="#{cliente.email}">
+						<h:outputText value="#{cliente.email}" />
+					</p:column>
+					<p:column headerText="#{msgs.telef}"
+						sortBy="#{cliente.telefCliente}"
+						filterBy="#{cliente.telefCliente}">
+						<h:outputText value="#{cliente.telefCliente}" />
+					</p:column>
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-search"
+							action="#{listaClienteBean.openForView}"
+							update=":form:manage-viewuser-content"
+							oncomplete="PF('manageClientViewDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{cliente}"
+								target="#{listaClienteBean.selectedUser}" />
+						</p:commandButton>
+						<sec:authorize access="hasAnyAuthority( 'comercial', 'manager')">
+							<p:commandButton icon="pi pi-pencil"
+								action="#{listaClienteBean.openForEdit}"
+								update=":form:manage-user-content"
+								oncomplete="PF('manageClientDialog').show()"
+								styleClass="edit-button rounded-button ui-button-success"
+								process="@this">
+								<f:setPropertyActionListener value="#{cliente}"
+									target="#{listaClienteBean.selectedUser}" />
+								<p:resetInput target=":form:manage-user-content" />
+							</p:commandButton>
+							<p:commandButton class="ui-button-warning rounded-button"
+								icon="pi pi-trash" process="@this"
+								action="#{listaClienteBean.deleteUser}">
+								<f:setPropertyActionListener value="#{cliente}"
+									target="#{listaClienteBean.selectedUser}" />
+								<p:confirm header="#{msgs.btn_confirm}"
+									message="Está seguro de eliminar al cliente?"
+									icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+						</sec:authorize>
+					</p:column>
+
+				</p:dataTable>
+
+
+				<ui:include src="nuevo_cliente.xhtml"></ui:include>
+				<ui:include src="view_cliente.xhtml"></ui:include>
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</div>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+</html>
