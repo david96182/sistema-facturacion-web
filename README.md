@@ -15,15 +15,15 @@ This web app facilitates the management of a company dedicated to the control of
 
 ### Main page ###
 
-![picture alt](https://imgur.com/gallery/2ExtQbk "Title")
+[Main page](https://imgur.com/gallery/2ExtQbk "Main page")
 
 ### Existing credentials in database ###
 
 User  | Pass  |  Role
---------- | ---------
-admin  | admin |  Admin
-comercial  |  comercial |  Comercial
-manager |  manager |  Manager
+----- | ----- | -----
+admin | admin |  Admin
+comercial | comercial | Comercial
+manager | manager| Manager
 guest | invi  |  Guest
 
 ## Backend ##
